@@ -1,4 +1,5 @@
 ![Github All Releases](https://img.shields.io/github/downloads/jacobshilitz/python-pdf-booklet/total?logo=github)
+![GitHub top language](https://img.shields.io/github/languages/top/jacobshilitz/python-pdf-booklet?logo=github)
 
 # PDF Booklet Generator
 
