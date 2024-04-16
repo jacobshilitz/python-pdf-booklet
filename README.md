@@ -13,7 +13,7 @@ The executable takes as input the paths to the input and output files. It has op
 Run the executable in your terminal/command line as follows:
 
 ```shell
-.booking input_pdf_path output_pdf_path [--hp] [--ltr] [--resize_only]
+booking.exe input_pdf_path output_pdf_path [--hp] [--ltr] [--resize_only]
 ```
 
 ### Command Line Arguments
