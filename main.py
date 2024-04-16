@@ -1,6 +1,7 @@
 import os
 import sys
 from pathlib import Path
+import argparse
 
 import pycpdflib
 
@@ -13,7 +14,10 @@ else:
     sys.exit(1)
 
 
-def booklet_pdf(pdf_file, output_file):
+def booklet_pdf(args):
+    pdf_file = args.input_pdf
+    output_file = args.output_pdf
+
     source_pdf = pycpdflib.fromFile(pdf_file, '')
     pdf_range = pycpdflib.all(source_pdf)
     pdf_size = pycpdflib.getMediaBox(source_pdf, 1)
@@ -45,19 +49,39 @@ def booklet_pdf(pdf_file, output_file):
         page_order.append(pages.pop(0))
         page_order.append(pages.pop())
 
-    test_pdf = pycpdflib.selectPages(source_pdf, page_order)
-    pycpdflib.impose(test_pdf, 2, 1, False, False, False, False, False, False, False, False)
+    if args.hp:
+        print("hp mode is running")
+        page_order = hp_sort(page_order)
 
-    pycpdflib.toFile(test_pdf, output_file, False, False)
+    if not args.resize_only:
+        source_pdf = pycpdflib.selectPages(source_pdf, page_order)
+
+        pycpdflib.impose(source_pdf, 2, 1, False, False, (not args.ltr), False, False, False, False, False)
+
+    pycpdflib.toFile(source_pdf, output_file, False, False)
 
     print("Resized PDF to", output_file)
 
+def hp_sort(arr):
+    # splitting list into sub-lists of 4 elements
+    sub_lists = [arr[i:i + 4] for i in range(0, len(arr), 4)]
 
-if len(sys.argv) > 1:
-    input_path = sys.argv[1]
-    output_path = sys.argv[2]
-else:
-    print("Usage: <input_path> <output_path>")
-    sys.exit(1)
+    # reversing order of sub-lists
+    sub_lists = sub_lists[::-1]
 
-booklet_pdf(input_path, output_path)
+    # flattening list of sub-lists into one list
+    flipped_arr = [item for sublist in sub_lists for item in sublist]
+
+    return flipped_arr
+
+
+parser = argparse.ArgumentParser(description='Convert pdf to booklet')
+parser.add_argument('input_pdf', type=str, help='Path to the input pdf file')
+parser.add_argument('output_pdf', type=str, help='Path to the output pdf file')
+parser.add_argument('--hp', help='HP mode', action='store_true')
+parser.add_argument('--ltr', help='left to right', action='store_true')
+parser.add_argument('--resize_only', help='just resize, no booklet', action='store_true')
+
+args = parser.parse_args()
+
+booklet_pdf(args)

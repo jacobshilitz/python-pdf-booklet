@@ -1,3 +1,4 @@
 /build
 /dist
 *.pdf
+/booklet.exe
