@@ -1,3 +1,6 @@
+![GitHub Downloads (latest release)](https://img.shields.io/github/downloads/jacobshilitz/python-pdf-booklet/latest/booklet.exe)
+
+
 # PDF Booklet Generator
 
 This is a Python executable script that converts a standard PDF file into a PDF booklet. The booklet generator uses the `pycpdflib` library to manipulate the PDF pages.
