@@ -1,5 +1,4 @@
-![GitHub Downloads (latest release)](https://img.shields.io/github/downloads/jacobshilitz/python-pdf-booklet/latest/booklet.exe)
-
+![Github All Releases](https://img.shields.io/github/downloads/jacobshilitz/python-pdf-booklet/total?logo=github)
 
 # PDF Booklet Generator
 
