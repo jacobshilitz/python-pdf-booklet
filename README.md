@@ -16,7 +16,7 @@ The executable takes as input the paths to the input and output files. It has op
 Run the executable in your terminal/command line as follows:
 
 ```shell
-booking.exe input_pdf_path output_pdf_path [--hp] [--ltr] [--resize_only]
+booking.exe input_pdf_path
 ```
 
 ### Command Line Arguments
@@ -24,7 +24,7 @@ booking.exe input_pdf_path output_pdf_path [--hp] [--ltr] [--resize_only]
 All command line arguments are required except for those in square brackets:
 
 - `input_pdf`: Path to the input PDF file.
-- `output_pdf`: Path to where the output PDF file will be saved.
+- `output_pdf`: Path to where the output PDF file will be saved. (optional)
 - `--hp`: This option enables HP mode, which changes the page ordering.
 - `--ltr`: This option specifies left-to-right page ordering for the booklet.
 - `--resize_only`: This option resizes the pages without creating a booklet.

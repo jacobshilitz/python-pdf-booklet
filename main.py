@@ -2,8 +2,11 @@ import os
 import sys
 from pathlib import Path
 import argparse
-
 import pycpdflib
+
+__version__ = '1.0.2'
+__package_name__ = 'booklet'
+
 
 if sys.platform.startswith('win32') or sys.platform.startswith('cygwin'):
     lib_path = Path(getattr(sys, '_MEIPASS', Path.cwd()))
@@ -16,7 +19,7 @@ else:
 
 def booklet_pdf(args):
     pdf_file = args.input_pdf
-    output_file = args.output_pdf
+    output_file = args.output_pdf if args.output_pdf else "booklet.pdf"
 
     source_pdf = pycpdflib.fromFile(pdf_file, '')
     pdf_range = pycpdflib.all(source_pdf)
@@ -75,13 +78,13 @@ def hp_sort(arr):
     return flipped_arr
 
 
-parser = argparse.ArgumentParser(description='Convert pdf to booklet')
-parser.add_argument('input_pdf', type=str, help='Path to the input pdf file')
-parser.add_argument('output_pdf', type=str, help='Path to the output pdf file')
-parser.add_argument('--hp', help='HP mode', action='store_true')
-parser.add_argument('--ltr', help='left to right', action='store_true')
-parser.add_argument('--resize_only', help='just resize, no booklet', action='store_true')
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(prog=__package_name__ ,description='Convert pdf to booklet')
+    parser.add_argument('input_pdf', type=str, help='Path to the input pdf file')
+    parser.add_argument('output_pdf', type=str, help='Path to the output pdf file', nargs='?')
+    parser.add_argument('--hp', help='HP mode', action='store_true')
+    parser.add_argument('--ltr', help='left to right', action='store_true')
+    parser.add_argument('--resize_only', help='just resize, no booklet', action='store_true')
 
-args = parser.parse_args()
-
-booklet_pdf(args)
+    args = parser.parse_args()
+    booklet_pdf(args)

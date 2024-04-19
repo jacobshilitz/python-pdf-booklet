@@ -1,1 +1,0 @@
-pyinstaller --add-binary="libcpdf\libpycpdf.dll:libcpdf" --onefile --clean --noconfirm  --name "booklet" .\main.py
