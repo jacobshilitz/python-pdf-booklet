@@ -21,10 +21,14 @@ else:
     print("This platform is not supported.")
     sys.exit(1)
 
+def get_basename_file(file_path):
+    base_name = os.path.basename(file_path)  # Returns 'filename.extension'
+    file_name_without_extension = os.path.splitext(base_name)[0]  # Returns 'filename'
+    return file_name_without_extension
 
 def booklet_pdf(data):
     pdf_file = data['input_pdf']
-    output_file = data['output_pdf'] if data['output_pdf'] else "booklet.pdf"
+    output_file = data['output_pdf'] if data['output_pdf'] else get_basename_file(pdf_file) + "_booklet.pdf"
     hp = data.get('hp', False)
     resize_only = data.get('resize_only', False)
     ltr = data.get('ltr', False)
