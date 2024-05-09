@@ -4,7 +4,7 @@ from pathlib import Path
 import argparse
 import pycpdflib
 
-__version__ = '1.0.4'
+__version__ = '1.0.5'
 __package_name__ = 'booklet'
 
 INCHES_PER_POINT = 72
