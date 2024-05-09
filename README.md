@@ -28,6 +28,15 @@ All command line arguments are required except for those in square brackets:
 - `--hp`: This option enables HP mode, which changes the page ordering.
 - `--ltr`: This option specifies left-to-right page ordering for the booklet.
 - `--resize_only`: This option resizes the pages without creating a booklet.
+- `--paper=11x17`: This option let you select output size between LTR and 11x17 
+
+### HP Mode
+to print to hp printer use this settings
+1. in cmd use `--hp` to make the page order 
+   * Print both sided and flip on short edge (flip up) 
+![ap-step1.png](img/ap-step1.png)
+   * On output tab select `Fold and Stich`
+![hp-step2.png](img/hp-step2.png)
 
 ## Developer Guide
 

@@ -137,7 +137,6 @@ if __name__ == '__main__':
     parser.add_argument('--hp', help='HP mode', action='store_true')
     parser.add_argument('--ltr', help='left to right', action='store_true')
     parser.add_argument('--resize_only', help='just resize, no booklet', action='store_true')
-
     parser.add_argument('--paper', type=str, help='Specify paper size. Available options: LTR, 11x17',
                         choices=['LTR', '11x17'], default='LTR')
 
