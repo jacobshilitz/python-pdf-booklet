@@ -65,7 +65,7 @@ class GUI:
         def task():
             try:
                 self.status_label = Label(self.window, text="Processing... Please wait.")
-                self.status_label.grid(row=6, column=0, columnspan=3, padx=10, pady=10, sticky="EW")
+                self.status_label.grid(row=7, column=0, columnspan=3, padx=10, pady=10, sticky="EW")
 
                 booklet_pdf(data)
                 self.status_label.config(text="Success: Booklet PDF successfully generated")
