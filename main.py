@@ -4,7 +4,7 @@ from pathlib import Path
 import argparse
 import pycpdflib
 
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 __package_name__ = 'booklet'
 
 INCHES_PER_POINT = 72
@@ -49,8 +49,8 @@ def booklet_pdf(data):
         pdf_crop_width = pdf_crop_size[1] - pdf_crop_size[0]
         pdf_crop_height = pdf_crop_size[3] - pdf_crop_size[2]
 
-        print("Original PDF crop size w:", round(pdf_crop_width / INCHES_PER_POINT, 2), "h:",
-              round(pdf_crop_height / INCHES_PER_POINT, 2))
+        # print("Original PDF crop size w:", round(pdf_crop_width / INCHES_PER_POINT, 2), "h:",
+        #       round(pdf_crop_height / INCHES_PER_POINT, 2))
 
         pdf_height = pdf_crop_height
         pdf_width = pdf_crop_width
@@ -84,7 +84,6 @@ def booklet_pdf(data):
     desired_width = desired_width_in_inch * INCHES_PER_POINT
     desired_height = desired_height_in_inch * INCHES_PER_POINT
 
-    print("")
 
     height_scale = desired_height / pdf_height
     width_scale = desired_width / pdf_width

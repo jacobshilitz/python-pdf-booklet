@@ -34,6 +34,18 @@ if __name__ == '__main__':
         '--add-binary=libcpdf\libpycpdf.dll:libcpdf',
         'main.py',
     ])
+
+    PyInstaller.__main__.run([
+        f'--name={__package_name__}_gui',  # Change the name to avoid conflicts with the main program
+        '--onefile',
+        '--clean',
+        '--noconfirm',
+        '--noconsole',
+        '--icon=icon.ico',
+        '--version-file=file_version_info.txt',
+        '--add-binary=libcpdf\libpycpdf.dll:libcpdf',  # Add any additional files here
+        'gui.py',  # Change the script name here
+    ])
     # shutil.copyfile('config-sample.ini', '{0}/config.ini'.format('dist'))
     # # shutil.copyfile('logging.yaml', '{0}/logging.yaml'.format('dist'))
     # shutil.copyfile('README.md', '{0}/README.md'.format('dist'))
