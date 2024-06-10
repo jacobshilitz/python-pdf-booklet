@@ -4,7 +4,7 @@ from pathlib import Path
 import argparse
 import pycpdflib
 
-__version__ = '1.0.5'
+__version__ = '1.0.6'
 __package_name__ = 'booklet'
 
 INCHES_PER_POINT = 72
@@ -21,9 +21,11 @@ else:
     print("This platform is not supported.")
     sys.exit(1)
 
+
 def get_basename_file(file_path):
     path = Path(file_path)
     return path.parent / path.stem
+
 
 def booklet_pdf(data):
     pdf_file = data['input_pdf']
@@ -68,13 +70,12 @@ def booklet_pdf(data):
     desired_width_in_inch = paper_size.get('w')
     desired_height_in_inch = paper_size.get('h')
 
-    if not resize_only:
-        #      rotate page size and split width in half
-        if paper_size.get('h') > paper_size.get('w'):
-            desired_width_in_inch = paper_size.get('h')
-            desired_height_in_inch = paper_size.get('w')
+    #      rotate page size and split width in half
+    if paper_size.get('h') > paper_size.get('w'):
+        desired_width_in_inch = paper_size.get('h')
+        desired_height_in_inch = paper_size.get('w')
 
-        desired_width_in_inch = desired_width_in_inch / 2
+    desired_width_in_inch = desired_width_in_inch / 2
     print("_______________")
     print('Desired width per page: ' + str(desired_width_in_inch))
     print('Desired height per page: ' + str(desired_height_in_inch))
@@ -82,7 +83,6 @@ def booklet_pdf(data):
 
     desired_width = desired_width_in_inch * INCHES_PER_POINT
     desired_height = desired_height_in_inch * INCHES_PER_POINT
-
 
     height_scale = desired_height / pdf_height
     width_scale = desired_width / pdf_width
