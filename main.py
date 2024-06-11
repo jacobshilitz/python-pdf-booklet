@@ -4,7 +4,7 @@ from pathlib import Path
 import argparse
 import pycpdflib
 
-__version__ = '1.0.6'
+__version__ = '1.0.7'
 __package_name__ = 'booklet'
 
 INCHES_PER_POINT = 72
@@ -38,29 +38,7 @@ def booklet_pdf(data):
     source_pdf = pycpdflib.fromFile(pdf_file, '')
     pdf_range = pycpdflib.all(source_pdf)
 
-    pdf_size = pycpdflib.getMediaBox(source_pdf, 1)
-    pdf_height = pdf_size[3]
-    pdf_width = pdf_size[1]
     total_pages = pycpdflib.pages(source_pdf)
-
-    # if it has crop we use the cropsize
-    if pycpdflib.hasBox(source_pdf, 1, '/CropBox'):
-        pdf_crop_size = pycpdflib.getCropBox(source_pdf, 1)
-
-        pdf_crop_width = pdf_crop_size[1] - pdf_crop_size[0]
-        pdf_crop_height = pdf_crop_size[3] - pdf_crop_size[2]
-
-        # print("Original PDF crop size w:", round(pdf_crop_width / INCHES_PER_POINT, 2), "h:",
-        #       round(pdf_crop_height / INCHES_PER_POINT, 2))
-
-        pdf_height = pdf_crop_height
-        pdf_width = pdf_crop_width
-
-    #     remove cropp age
-    #     pycpdflib.getCropBox()
-
-    print('Original PDF size w:', round(pdf_width / INCHES_PER_POINT, 2), 'h:', round(pdf_height / INCHES_PER_POINT, 2))
-
     paper_size = PAPER_SIZES.get(paper, False)
 
     if not paper_size:
@@ -76,6 +54,7 @@ def booklet_pdf(data):
         desired_height_in_inch = paper_size.get('w')
 
     desired_width_in_inch = desired_width_in_inch / 2
+
     print("_______________")
     print('Desired width per page: ' + str(desired_width_in_inch))
     print('Desired height per page: ' + str(desired_height_in_inch))
@@ -84,18 +63,31 @@ def booklet_pdf(data):
     desired_width = desired_width_in_inch * INCHES_PER_POINT
     desired_height = desired_height_in_inch * INCHES_PER_POINT
 
-    height_scale = desired_height / pdf_height
-    width_scale = desired_width / pdf_width
+    # iterate over each page and calculate the scale factor
+    page_scales = []
+    for page_num in range(1, total_pages + 1):
+        pdf_size = pycpdflib.getMediaBox(source_pdf, page_num)
+        pdf_width = pdf_size[1]
+        pdf_height = pdf_size[3]
 
-    # apply the scale
-    pycpdflib.scalePages(source_pdf, pdf_range, width_scale, height_scale)
+        page_scale = (desired_width / pdf_width, desired_height / pdf_height)
+        page_scales.append(page_scale)
+
+    page_scales = get_identical_ranges(page_scales)
+    print(page_scales)
+
+    # iterate over each page and apply the scale factor
+    for page_rage, page_scale in page_scales:
+        pycpdflib.scalePages(source_pdf, page_rage, page_scale[0], page_scale[1])
 
     remainder = total_pages % 4
     blank_pages = 0 if remainder == 0 else 4 - remainder
 
+    # add blank pages
     for blankPage in range(total_pages, total_pages + blank_pages):
         pycpdflib.padAfter(source_pdf, [blankPage])
 
+    # create page order
     pages = list(range(1, (total_pages + blank_pages + 1)))
     page_order = []
 
@@ -111,12 +103,24 @@ def booklet_pdf(data):
 
     if not resize_only:
         source_pdf = pycpdflib.selectPages(source_pdf, page_order)
-
         pycpdflib.impose(source_pdf, 2, 1, False, False, (not ltr), False, False, False, False, False)
 
     pycpdflib.toFile(source_pdf, output_file, False, False)
 
     print("Resized PDF to", output_file)
+
+
+def get_identical_ranges(data):
+    results = []
+    start_index = 0
+    for i in range(1, len(data)):
+        if data[i] != data[start_index]:
+            if i - start_index >= 1:
+                results.append((list(range(start_index + 1, i + 1)), data[start_index]))
+            start_index = i
+    if len(data) - start_index >= 1:  # check the last sequence
+        results.append((list(range(start_index + 1, len(data) + 1)), data[start_index]))
+    return results
 
 
 def hp_sort(arr):
